@@ -1,10 +1,8 @@
 package br.com.alura.adopet.api.service;
 
+import br.com.alura.adopet.api.dto.AprovacaoAdocaoDto;
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
-import br.com.alura.adopet.api.model.Abrigo;
-import br.com.alura.adopet.api.model.Adocao;
-import br.com.alura.adopet.api.model.Pet;
-import br.com.alura.adopet.api.model.Tutor;
+import br.com.alura.adopet.api.model.*;
 import br.com.alura.adopet.api.repository.AdocaoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
 import br.com.alura.adopet.api.repository.TutorRepository;
@@ -23,6 +21,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -50,36 +49,36 @@ class AdocaoServiceTest {
     private Tutor tutor;
     @Mock
     private Abrigo abrigo;
-    private SolicitacaoAdocaoDto dto;
+    private SolicitacaoAdocaoDto solicitacaoDto;
     @Captor
     private ArgumentCaptor<Adocao> adocaoCaptor;
 
     @Test
     void deveriaSalvarAdocaoAoSolicitar() {
         //ARRANGE
-        this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
-        given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
-        given(tutorRepository.getReferenceById(dto.idTutor())).willReturn(tutor);
+        this.solicitacaoDto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
+        given(petRepository.getReferenceById(solicitacaoDto.idPet())).willReturn(pet);
+        given(tutorRepository.getReferenceById(solicitacaoDto.idTutor())).willReturn(tutor);
         given(pet.getAbrigo()).willReturn(abrigo);
 
 
         //ACT
-        adocaoService.solicitar(dto);
+        adocaoService.solicitar(solicitacaoDto);
         //ASSERT
         then(adocaoRepository).should().save(adocaoCaptor.capture());
         Adocao adocaoSalva = adocaoCaptor.getValue();
         Assertions.assertEquals(pet, adocaoSalva.getPet());
         Assertions.assertEquals(tutor, adocaoSalva.getTutor());
-        Assertions.assertEquals(dto.motivo(), adocaoSalva.getMotivo());
+        Assertions.assertEquals(solicitacaoDto.motivo(), adocaoSalva.getMotivo());
 
     }
 
     @Test
     void deveriaChamarValidadoresDeAdocaoAoSolicitar() {
         //ARRANGE
-        this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
-        given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
-        given(tutorRepository.getReferenceById(dto.idTutor())).willReturn(tutor);
+        this.solicitacaoDto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
+        given(petRepository.getReferenceById(solicitacaoDto.idPet())).willReturn(pet);
+        given(tutorRepository.getReferenceById(solicitacaoDto.idTutor())).willReturn(tutor);
         given(pet.getAbrigo()).willReturn(abrigo);
 
         validacoes.add(validador1);
@@ -87,9 +86,12 @@ class AdocaoServiceTest {
 
 
         //ACT
-        adocaoService.solicitar(dto);
+        adocaoService.solicitar(solicitacaoDto);
         //ASSERT
-        BDDMockito.then(validador1).should().validar(dto);
-        BDDMockito.then(validador2).should().validar(dto);
+        BDDMockito.then(validador1).should().validar(solicitacaoDto);
+        BDDMockito.then(validador2).should().validar(solicitacaoDto);
     }
+
+
+
 }

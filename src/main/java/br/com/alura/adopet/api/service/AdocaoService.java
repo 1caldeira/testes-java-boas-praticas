@@ -52,6 +52,7 @@ public class AdocaoService {
     public void aprovar(AprovacaoAdocaoDto dto) {
         Adocao adocao = repository.getReferenceById(dto.idAdocao());
         adocao.marcarComoAprovada();
+        repository.save(adocao);
 
         emailService.enviarEmail(
                 adocao.getPet().getAbrigo().getEmail(),
