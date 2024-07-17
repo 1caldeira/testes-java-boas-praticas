@@ -24,13 +24,10 @@ class ValidacaoTutorComLimiteDeAdocoesTest {
 
     @InjectMocks
     private ValidacaoTutorComLimiteDeAdocoes validacao;
-
     @Mock
     private AdocaoRepository adocaoRepository;
-
     @Mock
     private TutorRepository tutorRepository;
-
     @Mock
     private Adocao adocao;
     @Mock
@@ -42,11 +39,7 @@ class ValidacaoTutorComLimiteDeAdocoesTest {
     @Mock
     private Adocao adocao5;
     @Mock
-    private Adocao adocao6;
-
-    @Mock
     private Tutor tutor;
-
     @Mock
     private SolicitacaoAdocaoDto dto;
 

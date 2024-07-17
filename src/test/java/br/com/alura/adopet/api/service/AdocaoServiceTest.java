@@ -20,8 +20,7 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+
 
 
 @ExtendWith(MockitoExtension.class)
@@ -83,7 +82,6 @@ class AdocaoServiceTest {
 
         validacoes.add(validador1);
         validacoes.add(validador2);
-
 
         //ACT
         adocaoService.solicitar(solicitacaoDto);

@@ -87,10 +87,6 @@ class AbrigoControllerTest {
         Assertions.assertEquals(200, response.getStatus());
     }
 
-        //ASSERT
-        Assertions.assertEquals(404, response.getStatus());
-    }
-
     @Test
     void deveriaDevolverAbrigosCadastradosEStatusCode200() throws Exception {
         //ARRANGE
@@ -133,4 +129,47 @@ class AbrigoControllerTest {
         Assertions.assertEquals(200,response.getStatus());
     }
 
+    @Test
+    void deveriaDevolver400BadRequestRegexTelefone() throws Exception {
+        //ARRANGE
+
+        String json = """
+                {
+                    "nome" : "dunha",
+                    "telefone":"1199",
+                    "email":"emailqualquer@email.com"
+                }
+                """;
+
+        //ACT
+        MockHttpServletResponse response = mvc.perform(
+                post("/abrigos")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
+
+        //ASSERT
+        Assertions.assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    void deveriaDevolver400BadRequestRegexEmail() throws Exception {
+        //ARRANGE
+
+        String json = """
+                {
+                    "nome" : "dunha",
+                    "telefone":"13981200202",
+                    "email":"errado"
+                }
+                """;
+
+        //ACT
+        MockHttpServletResponse response = mvc.perform(
+                post("/abrigos")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON)).andReturn().getResponse();
+
+        //ASSERT
+        Assertions.assertEquals(400, response.getStatus());
+    }
 }
